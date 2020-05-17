@@ -2,14 +2,15 @@
   <div>
       <!--查询表单-->
       <el-form :model="params">
-        <el-select v-model="params.siteId" placeholder="请选择站点">
+        <el-select v-model="params.siteId" placeholder="请选择站点" clearable>
           <el-option
             v-for="item in siteList"
-            :key="item.siteId"
-            :label="item.siteName"
-            :value="item.siteId">
+            :key="item.value"
+            :label="item.text"
+            :value="item.value">
           </el-option>
         </el-select>
+        页面别名:<el-input v-model="params.pageAliase" style="width: 100px;"></el-input>
         <el-button type="primary" v-on:click="query" size="small">查询</el-button>
         <router-link class="mui-tab-item" :to="{path:'/cms/page/add/',query:{
           page: this.params.page,
@@ -21,7 +22,7 @@
       <el-table :data="list" highlight-current-row v-loading="listLoading" style="width: 100%;">
         <el-table-column type="index" width="60">
         </el-table-column>
-        <el-table-column prop="pageName" label="页面名称" width="120">
+        <el-table-column prop="pageName" label="页面名称" width="180">
         </el-table-column>
         <el-table-column prop="pageAliase" label="别名" width="120">
         </el-table-column>
@@ -85,8 +86,9 @@
       return {
         params:{
           page:1,//页码
-          size:2,//每页显示个数
-          siteId:''//站点id
+          size:5,//每页显示个数
+          siteId:'',//站点id
+          pageAliase:''
         },
         listLoading:false,
         list:[],
@@ -96,6 +98,12 @@
       }
     },
     methods:{
+      // 站点列表
+      getSiteList() {
+        cmsApi.site_comboxlist().then((res)=>{
+          this.siteList = res.comboxList
+        })
+      },
       formatCreatetime(row, column){
         var createTime = new Date(row.pageCreateTime);
         if (createTime) {
@@ -157,7 +165,6 @@
       },
       query(){
         cmsApi.page_list(this.params.page,this.params.size,this.params).then((res)=>{
-          console.log(res)
           this.total = res.queryResult.total
           this.list = res.queryResult.list
         })
@@ -175,16 +182,7 @@
       //默认查询页面
       this.query()
       //初始化站点列表
-      this.siteList = [
-        {
-          siteId:'5a751fab6abb5044e0d19ea1',
-          siteName:'门户主站'
-        },
-        {
-          siteId:'102',
-          siteName:'测试站'
-        }
-      ]
+      this.getSiteList()
     }
   }
 </script>

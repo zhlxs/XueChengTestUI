@@ -13,16 +13,18 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     //proxyTable: proxyConfig.proxyList,
+    // 代理中间件
     proxyTable: {
       '/banner': {
         // target: 'http://localhost:3000/mock/11'
         target: 'http://127.0.0.1:7777'
 
       },
+      // 以这种形式开头的请求地址，均会被代理到这个地址
       '/api/cms': {
         target: 'http://localhost:31001',
         pathRewrite: {
-          '^/api': ''
+          '^/api': '' // 这里将/api替换成空字符
         }
         //target: 'http://127.0.0.1:50201'
 

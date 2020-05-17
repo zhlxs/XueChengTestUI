@@ -3,6 +3,7 @@ import querystring from 'querystring'
 let sysConfig = require('@/../config/sysConfig')
 let apiUrl = sysConfig.xcApiUrlPre;
 //测试
+// ./表示当前路径;../表示上级路径
 export const page_test= id => {
   return http.requestQuickGet(apiUrl+'/cms/user/get/'+id)
 }
@@ -40,4 +41,16 @@ export const page_getHtml= id => {
 /*发布页面*/
 export const page_postPage= id => {
   return http.requestPost(apiUrl+'/cms/page/postPage/'+id)
+}
+/*站点下拉列表*/
+export const site_comboxlist = () => {
+  //params为json格式
+  //使用querystring将json对象转成key/value串
+  return http.requestQuickGet(apiUrl+'/cms/site/comboxList')
+}
+/*模板下拉列表*/
+export const template_comboxlist = () => {
+  //params为json格式
+  //使用querystring将json对象转成key/value串
+  return http.requestQuickGet(apiUrl+'/cms/template/comboxList')
 }

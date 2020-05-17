@@ -7,7 +7,7 @@ export default [{
     path: '/cms',
     component: Home,
     name: 'CMS',
-    hidden: false,
+    hidden: false,// 控制菜单显示或者隐藏
     children: [
       { path: '/cms/page/list', name:'页面列表',component: page_list,hidden:false},
       { path: '/cms/page/add', name:'添加页面',component: page_add,hidden:true},

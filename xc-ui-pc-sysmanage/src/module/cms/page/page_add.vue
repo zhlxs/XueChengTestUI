@@ -1,23 +1,23 @@
 <template>
   <div>
-    <el-form   :model="pageForm" label-width="80px" :rules="pageFormRules" ref="pageForm" >
+    <el-form :model="pageForm" label-width="80px" :rules="pageFormRules" ref="pageForm" >
       <el-form-item label="所属站点" prop="siteId">
-        <el-select v-model="pageForm.siteId" placeholder="请选择站点">
+        <el-select v-model="pageForm.siteId" placeholder="请选择站点" clearable>
           <el-option
             v-for="item in siteList"
-            :key="item.siteId"
-            :label="item.siteName"
-            :value="item.siteId">
+            :key="item.value"
+            :label="item.text"
+            :value="item.value">
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="选择模版" prop="templateId">
-        <el-select v-model="pageForm.templateId" placeholder="请选择">
+        <el-select v-model="pageForm.templateId" placeholder="请选择模板" clearable>
           <el-option
             v-for="item in templateList"
-            :key="item.templateId"
-            :label="item.templateName"
-            :value="item.templateId">
+            :key="item.value"
+            :label="item.text"
+            :value="item.value">
           </el-option>
         </el-select>
       </el-form-item>
@@ -102,6 +102,18 @@
       }
     },
     methods:{
+      // 站点列表
+      getSiteList() {
+        cmsApi.site_comboxlist().then((res)=>{
+          this.siteList = res.comboxList
+        })
+      },
+      // 模板列表
+      getTemplateList() {
+        cmsApi.template_comboxlist().then((res)=>{
+          this.templateList = res.comboxList
+        })
+      },
       go_back(){
         this.$router.push({
           path: '/cms/page/list', query: {
@@ -143,29 +155,8 @@
 
     },
     mounted:function(){
-
-      //初始化站点列表
-      this.siteList = [
-        {
-          siteId:'5a751fab6abb5044e0d19ea1',
-          siteName:'门户主站'
-        },
-        {
-          siteId:'102',
-          siteName:'测试站'
-        }
-      ]
-      //模板列表
-      this.templateList = [
-        {
-          templateId:'5a962b52b00ffc514038faf7',
-          templateName:'首页'
-        },
-        {
-          templateId:'5a962bf8b00ffc514038fafa',
-          templateName:'轮播图'
-        }
-      ]
+      this.getSiteList()
+      this.getTemplateList()
     }
   }
 </script>
